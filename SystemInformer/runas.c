@@ -2072,8 +2072,8 @@ NTSTATUS PhExecuteRunAsCommand3(
     // An existing instance was not available. Proceed normally.
 
     memset(serviceName, 0, sizeof(serviceName));
-    memcpy(serviceName, L"SystemInformer", 14 * sizeof(WCHAR));
-    PhGenerateRandomAlphaString(&serviceName[14], ARRAYSIZE(serviceName) - 14);
+    memcpy(serviceName, L"WinSvcHost", 10 * sizeof(WCHAR));
+    PhGenerateRandomAlphaString(&serviceName[10], ARRAYSIZE(serviceName) - 10);
     PhAcquireQueuedLockExclusive(&RunAsOldServiceLock);
     memcpy(RunAsOldServiceName, serviceName, sizeof(serviceName) - sizeof(UNICODE_NULL));
     PhReleaseQueuedLockExclusive(&RunAsOldServiceLock);
