@@ -19,7 +19,7 @@ set(SI_OUTPUT_DIR "${SI_ROOT}/bin-cmake" CACHE PATH "Output directory")
 
 option(SI_WITH_CORE          "Configure core projects"          ON)
 option(SI_WITH_PLUGINS       "Configure plugin projects"        OFF)
-option(SI_WITH_KERNEL        "Configure kernel projects"        OFF)
+option(SI_WITH_KERNEL        "Configure kernel projects"        ON)
 option(SI_WITH_PREFAST       "Enables prefast analysis"         OFF)
 option(SI_WITH_WPP_USER      "Enables user mode WPP trace"      OFF)
 option(SI_WITH_WPP_KERNEL    "Enables kernel mode WPP trace"    ON)
@@ -36,7 +36,6 @@ if(SI_WITH_CORE)
 endif()
 
 if(SI_WITH_KERNEL)
-    message(FATAL_ERROR "Kernel mode projects are not supported")
     add_subdirectory(KSystemInformer)
 endif()
 

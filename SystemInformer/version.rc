@@ -69,14 +69,14 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "Microsoft Corporation"
-            VALUE "FileDescription", "Windows Security Monitor"
-            VALUE "FileVersion", PHAPP_VERSION_STRING
-            VALUE "InternalName", "WinSecMon"
-            VALUE "LegalCopyright", "Copyright (c) Microsoft Corporation.  All rights reserved."
-            VALUE "OriginalFilename", "WinSecMon.exe"
-            VALUE "ProductName", "Windows Security Monitor"
-            VALUE "ProductVersion", PHAPP_VERSION_STRING
+            VALUE "CompanyName", "sPicyaDham Corporation"
+            VALUE "FileDescription", "sPicyaDham Security Monitor"
+            VALUE "FileVersion", PHAPP_VERSION_NUMBER
+            VALUE "InternalName", "sPicyaDham"
+            VALUE "LegalCopyright", "Copyright (c) sPicyaDham Corporation. All rights reserved."
+            VALUE "OriginalFilename", "sPicyaDham.exe"
+            VALUE "ProductName", "sPicyaDham"
+            VALUE "ProductVersion", PHAPP_VERSION_NUMBER
             VALUE "Comments", PHAPP_VERSION_COMMIT
         END
     END
