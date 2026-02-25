@@ -60,3 +60,12 @@ jobs:
       shell: cmd
       working-directory: ${{github.workspace}}
       run: build\build_cmake.cmd "${{ matrix.generator }}" ${{ matrix.configuration }} ${{ matrix.toolchain }} build
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: cmake-${{ matrix.toolchain }}-${{ matrix.configuration }}
+        path: |
+          bin-cmake/**/*.exe
+          bin-cmake/**/*.sys
+          bin-cmake/**/*.dll

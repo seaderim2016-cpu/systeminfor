@@ -75,6 +75,15 @@ jobs:
       working-directory: ${{github.workspace}}
       run: build\build_release.cmd
 
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: msbuild-release
+        path: |
+          bin/**/*.exe
+          bin/**/*.sys
+          bin/**/*.dll
+
   build-driver:
     permissions:
       contents: read
@@ -140,3 +149,12 @@ jobs:
       shell: cmd
       working-directory: ${{github.workspace}}
       run: build\build_zdriver.cmd release
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: msbuild-driver-release
+        path: |
+          bin/**/*.sys
+          bin/**/*.inf
+          bin/**/*.cat
