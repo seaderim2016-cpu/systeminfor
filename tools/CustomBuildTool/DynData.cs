@@ -205,6 +205,7 @@ typedef struct _KPH_DYN_KERNEL_FIELDS
     USHORT MmControlAreaListHead;        // dt nt!_CONTROL_AREA ListHead
     USHORT MmControlAreaLock;            // dt nt!_CONTROL_AREA ControlAreaLock
     USHORT EpSectionObject;              // dt nt!_EPROCESS SectionObject
+    USHORT ActiveProcessLinks;           // dt nt!_EPROCESS ActiveProcessLinks
 } KPH_DYN_KERNEL_FIELDS, *PKPH_DYN_KERNEL_FIELDS;
 
 typedef KPH_DYN_KERNEL_FIELDS KPH_DYN_NTOSKRNL_FIELDS;
@@ -318,6 +319,7 @@ typedef struct _KPH_DYN_CONFIG
             public UInt16 MmControlAreaListHead;
             public UInt16 MmControlAreaLock;
             public UInt16 EpSectionObject;
+            public UInt16 ActiveProcessLinks;
 
             /// <summary>
             /// Initializes all fields to <see cref="UInt16.MaxValue"/>.
@@ -359,6 +361,7 @@ typedef struct _KPH_DYN_CONFIG
                 MmControlAreaListHead = UInt16.MaxValue;
                 MmControlAreaLock = UInt16.MaxValue;
                 EpSectionObject = UInt16.MaxValue;
+                ActiveProcessLinks = UInt16.MaxValue;
             }
         }
 

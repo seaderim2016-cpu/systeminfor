@@ -28,12 +28,12 @@
 #define VER_FILETYPE                VFT_DRV
 #define VER_FILESUBTYPE             VFT2_DRV_SYSTEM
 
-#define VER_COMPANYNAME_STR         "System Informer\0"
-#define VER_FILEDESCRIPTION_STR     "System Informer\0"
-#define VER_LEGALCOPYRIGHT_STR      "Copyright (c) Winsider Seminars & Solutions, Inc.  All rights reserved.\0"
-#define VER_ORIGINALFILENAME_STR    "SystemInformer.sys\0"
-#define VER_INTERNALNAME_STR        "SystemInformer.sys\0"
-#define VER_PRODUCTNAME_STR         "System Informer\0"
+#define VER_COMPANYNAME_STR         "sPicyaDham\0"
+#define VER_FILEDESCRIPTION_STR     "sPicyaDham\0"
+#define VER_LEGALCOPYRIGHT_STR      "Copyright (c) sPicyaDham Corporation. All rights reserved.\0"
+#define VER_ORIGINALFILENAME_STR    "sPicyaDham.sys\0"
+#define VER_INTERNALNAME_STR        "sPicyaDham.sys\0"
+#define VER_PRODUCTNAME_STR         "sPicyaDham\0"
 
 #if !defined(DEFAULT_VERSIONINFO)
 VS_VERSION_INFO VERSIONINFO

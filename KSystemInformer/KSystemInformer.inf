@@ -12,27 +12,27 @@
 Signature    = "$WINDOWS NT$"
 Class        = ActivityMonitor
 ClassGuid    = {b86dff51-a31e-4bac-b3cf-e8cfe75c9fc2}
-Provider     = SystemInformer
+Provider     = sPicyaDham
 DriverVer    = 09/01/2022,3.0.0000.0000
-CatalogFile  = KSystemInformer.cat
+CatalogFile  = spicydham.cat
 PnpLockdown  = 1
 
 [DestinationDirs]
 DefaultDestDir = 13
 
-[SystemInformer.Service]
-DisplayName    = KSystemInformer
+[sPicyaDham.Service]
+DisplayName    = sPicyaDham
 ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
 StartType      = 3               ; SERVICE_DEMAND_START
 ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %13%\systeminformer.sys
+ServiceBinary  = %13%\spicydham.sys
 
-[SystemInformer.CopyFiles]
-systeminformer.sys
+[sPicyaDham.CopyFiles]
+spicydham.sys
 ksi.dll
 
 [SourceDisksFiles]
-systeminformer.sys = 1,,
+spicydham.sys = 1,,
 ksi.dll = 1,,
 
 [SourceDisksNames]
@@ -46,17 +46,17 @@ DiskId1 = "KSystemInformer Disk #1"
 ;
 
 [DefaultInstall.NTamd64]
-CopyFiles = SystemInformer.CopyFiles
+CopyFiles = sPicyaDham.CopyFiles
 
 [DefaultInstall.NTamd64.Services]
-AddService = KSystemInformer,,SystemInformer.Service
+AddService = sPicyaDham,,sPicyaDham.Service
 
 ;
 ; ARM64 Section
 ;
 
 [DefaultInstall.NTarm64]
-CopyFiles = SystemInformer.CopyFiles
+CopyFiles = sPicyaDham.CopyFiles
 
 [DefaultInstall.NTarm64.Services]
-AddService = KSystemInformer,,SystemInformer.Service
+AddService = sPicyaDham,,sPicyaDham.Service
