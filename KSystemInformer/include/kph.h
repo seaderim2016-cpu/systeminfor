@@ -22,6 +22,7 @@
 #include <ntstrsafe.h>
 #include <usermode_accessors.h>
 
+
 #pragma warning(pop)
 #include <pooltags.h>
 #define PHNT_MODE PHNT_MODE_KERNEL
