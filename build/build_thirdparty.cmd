@@ -14,6 +14,8 @@ if "%GITHUB_ACTIONS%"=="true" (
     set "TLG=off"
 ) else if "%TF_BUILD%"=="true" (
     set "TLG=off"
+) else if "%APPVEYOR%"=="True" (
+    set "TLG=off"
 )
 
 for /f "usebackq tokens=*" %%a in (`call "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (

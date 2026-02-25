@@ -9,4 +9,10 @@ if not exist "tools\CustomBuildTool\bin\Release\%PROCESSOR_ARCHITECTURE%\CustomB
 
 start /B /W "" "tools\CustomBuildTool\bin\Release\%PROCESSOR_ARCHITECTURE%\CustomBuildTool.exe" "-release"
 
+if "%GITHUB_ACTIONS%"=="true" goto end
+if "%TF_BUILD%"=="true" goto end
+if "%APPVEYOR%"=="True" goto end
+
 pause
+
+:end

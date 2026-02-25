@@ -7,6 +7,8 @@ if "%GITHUB_ACTIONS%"=="true" (
     set "TIB=true"
 ) else if "%TF_BUILD%"=="true" (
     set "TIB=true"
+) else if "%APPVEYOR%"=="True" (
+    set "TIB=true"
 )
 
 for /f "usebackq tokens=*" %%a in (`call "%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -prerelease -products * -requires Microsoft.Component.MSBuild -property installationPath`) do (
