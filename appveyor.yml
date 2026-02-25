@@ -1,0 +1,31 @@
+image: Visual Studio 2022
+
+# Build configuration details
+configuration:
+  - Debug
+  - Release
+
+platform:
+  - Win32
+  - x64
+
+environment:
+  matrix:
+    - job_name: Build System Informer
+
+install:
+  - nuget restore packages.config -PackagesDirectory packages\
+
+before_build:
+  - cmd: build\build_init.cmd
+
+build_script:
+  - if "%configuration%"=="Debug" build\build_debug.cmd
+  - if "%configuration%"=="Release" build\build_release.cmd
+
+artifacts:
+  - path: bin\**\*.exe
+  - path: bin\**\*.sys
+  - path: bin\**\*.dll
+
+deploy: off
