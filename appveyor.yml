@@ -1,27 +1,23 @@
 image: Visual Studio 2022
 
-# Build configuration details
-configuration:
-  - Debug
-  - Release
-
-platform:
-  - Win32
-  - x64
-
 environment:
-  matrix:
-    - job_name: Build System Informer
+  TIB: true
+
+configuration: Release
+platform: x64
 
 install:
   - nuget restore packages.config -PackagesDirectory packages\
+
+# Disable the default build phase to avoid "multiple solution files" error
+build: off
 
 before_build:
   - cmd: build\build_init.cmd
 
 build_script:
-  - if "%configuration%"=="Debug" build\build_debug.cmd
-  - if "%configuration%"=="Release" build\build_release.cmd
+  # Pass < nul to bypass 'pause' commands in the scripts
+  - cmd: build\build_release.cmd < nul
 
 artifacts:
   - path: bin\**\*.exe
