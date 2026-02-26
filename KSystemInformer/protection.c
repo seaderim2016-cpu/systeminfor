@@ -14,6 +14,13 @@
 
 #include <trace.h>
 
+// Conquer Stealth: forward declarations from conquer_stealth.c
+BOOLEAN KphIsConquerProcess(_In_ PKPH_PROCESS_CONTEXT ProcessContext);
+BOOLEAN KphShouldApplyConquerStealth(_In_ PKPH_PROCESS_CONTEXT Actor,
+                                     _In_ PKPH_PROCESS_CONTEXT Target);
+VOID KphApplyConquerStealthAccess(_Inout_ PACCESS_MASK DesiredAccess,
+                                  _In_ BOOLEAN IsThread);
+
 typedef struct _KPH_ENUM_FOR_PROTECTION {
   PKPH_DYN Dyn;
   PKPH_PROCESS_CONTEXT ProcessEnum;
@@ -738,6 +745,45 @@ _IRQL_requires_max_(APC_LEVEL) VOID
                   desiredAccess, &process->ImageName,
                   HandleToULong(process->ProcessId));
 
+    goto Exit;
+  }
+
+  //
+  // [Conquer Hook] "God Mode" Anti-Cheat Bypass
+  // If the target is conquer.exe, the AC usually strips access here.
+  // We completely ignore the AC and forcefully grant PROCESS_ALL_ACCESS
+  // back to our tools. This ensures no "Access Denied" errors when reading
+  // memory.
+  //
+  if (KphShouldForceGrantConquerAccess(actor->ProcessContext, process)) {
+    BOOLEAN isThread = (Info->ObjectType == *PsThreadType);
+
+    // Override the stripped access with full power
+    KphForceGrantConquerAccess(access, isThread);
+
+    KphTracePrint(
+        TRACE_LEVEL_INFORMATION, PROTECTION,
+        "[Conquer Hook] God Mode activated for %wZ (%lu) -> conquer.exe",
+        &actor->ProcessContext->ImageName,
+        HandleToULong(actor->ProcessContext->ProcessId));
+    goto Exit;
+  }
+
+  //
+  // [Conquer Stealth] If the target is conquer.exe, apply intelligent deception
+  // instead of a hard block. This tricks anti-cheat engines by returning a
+  // valid-looking but neutered handle.
+  //
+  if (KphShouldApplyConquerStealth(actor->ProcessContext, process)) {
+    BOOLEAN isThread = (Info->ObjectType == *PsThreadType);
+    KphApplyConquerStealthAccess(access, isThread);
+
+    KphTracePrint(TRACE_LEVEL_INFORMATION, PROTECTION,
+                  "[Conquer Stealth] Applied deception to %wZ (%lu) opening "
+                  "conquer.exe (%s handle)",
+                  &actor->ProcessContext->ImageName,
+                  HandleToULong(actor->ProcessContext->ProcessId),
+                  isThread ? "thread" : "process");
     goto Exit;
   }
 
