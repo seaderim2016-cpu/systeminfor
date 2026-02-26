@@ -10,8 +10,8 @@
  *
  */
 
-#include <kphuser.h>
 #include <ph.h>
+#include <kphuser.h>
 #include <svcsup.h>
 
 
