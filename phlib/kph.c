@@ -14,6 +14,7 @@
 #include <ph.h>
 #include <svcsup.h>
 
+
 static CONST PH_STRINGREF KphDefaultPortName = PH_STRINGREF_INIT(KPH_PORT_NAME);
 static PPH_OBJECT_TYPE KphMessageObjectType = NULL;
 static PPH_OBJECT_TYPE KphUserMessageObjectType = NULL;
