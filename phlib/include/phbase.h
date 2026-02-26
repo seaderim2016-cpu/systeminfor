@@ -42,21 +42,14 @@
 #define PH_CLANG_DIAGNOSTIC_POP()
 #endif
 
-#ifndef EXTERN_C_START
-#ifdef __cplusplus
-#define EXTERN_C_START extern "C" {
-#define EXTERN_C_END }
-#else
-#define EXTERN_C_START
-#define EXTERN_C_END
-#endif
-#endif
+typedef struct _PH_OBJECT_TYPE PH_OBJECT_TYPE;
+typedef PH_OBJECT_TYPE *PPH_OBJECT_TYPE;
 
-#include <phnt_windows.h>
-#include <phnt.h>
 #include <phbasesup.h>
 #include <phconfig.h>
 #include <phdata.h>
+#include <phnt.h>
+#include <phnt_windows.h>
 #include <phsup.h>
 #include <queuedlock.h>
 #include <ref.h>

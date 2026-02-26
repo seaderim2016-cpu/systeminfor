@@ -18,61 +18,50 @@ EXTERN_C_START
 // Configuration
 //
 
-#define PH_OBJECT_SMALL_OBJECT_SIZE  48
+#define PH_OBJECT_SMALL_OBJECT_SIZE 48
 #define PH_OBJECT_SMALL_OBJECT_COUNT 512
 
 // Object type flags
-#define PH_OBJECT_TYPE_USE_FREE_LIST     0x00000001
+#define PH_OBJECT_TYPE_USE_FREE_LIST 0x00000001
 #define PH_OBJECT_TYPE_TRY_USE_FREE_LIST 0x00000002
-#define PH_OBJECT_TYPE_VALID_FLAGS       0x00000003
+#define PH_OBJECT_TYPE_VALID_FLAGS 0x00000003
 
 //
 // Object type callbacks
 //
 
 /**
- * The delete procedure for an object type, called when an object of the type is being freed.
+ * The delete procedure for an object type, called when an object of the type is
+ * being freed.
  *
  * \param Object A pointer to the object being freed.
  * \param Flags Reserved.
  */
-typedef _Function_class_(PH_TYPE_DELETE_PROCEDURE)
-VOID NTAPI PH_TYPE_DELETE_PROCEDURE(
-    _In_ PVOID Object,
-    _In_ ULONG Flags
-    );
-typedef PH_TYPE_DELETE_PROCEDURE* PPH_TYPE_DELETE_PROCEDURE;
-
-typedef struct _PH_OBJECT_TYPE PH_OBJECT_TYPE;
-typedef PH_OBJECT_TYPE* PPH_OBJECT_TYPE;
+typedef _Function_class_(PH_TYPE_DELETE_PROCEDURE) VOID NTAPI
+    PH_TYPE_DELETE_PROCEDURE(_In_ PVOID Object, _In_ ULONG Flags);
+typedef PH_TYPE_DELETE_PROCEDURE *PPH_TYPE_DELETE_PROCEDURE;
 
 typedef struct _PH_QUEUED_LOCK PH_QUEUED_LOCK;
-typedef PH_QUEUED_LOCK* PPH_QUEUED_LOCK;
+typedef PH_QUEUED_LOCK *PPH_QUEUED_LOCK;
 
 #ifdef DEBUG
-typedef _Function_class_(PH_CREATE_OBJECT_HOOK)
-VOID NTAPI PH_CREATE_OBJECT_HOOK(
-    _In_ PVOID Object,
-    _In_ SIZE_T Size,
-    _In_ ULONG Flags,
-    _In_ PPH_OBJECT_TYPE ObjectType
-    );
-typedef PH_CREATE_OBJECT_HOOK* PPH_CREATE_OBJECT_HOOK;
+typedef _Function_class_(PH_CREATE_OBJECT_HOOK) VOID NTAPI
+    PH_CREATE_OBJECT_HOOK(_In_ PVOID Object, _In_ SIZE_T Size, _In_ ULONG Flags,
+                          _In_ PPH_OBJECT_TYPE ObjectType);
+typedef PH_CREATE_OBJECT_HOOK *PPH_CREATE_OBJECT_HOOK;
 #endif
 
-typedef struct _PH_OBJECT_TYPE_PARAMETERS
-{
-    SIZE_T FreeListSize;
-    ULONG FreeListCount;
+typedef struct _PH_OBJECT_TYPE_PARAMETERS {
+  SIZE_T FreeListSize;
+  ULONG FreeListCount;
 } PH_OBJECT_TYPE_PARAMETERS, *PPH_OBJECT_TYPE_PARAMETERS;
 
-typedef struct _PH_OBJECT_TYPE_INFORMATION
-{
-    PCWSTR Name;
-    ULONG NumberOfObjects;
-    USHORT Flags;
-    UCHAR TypeIndex;
-    UCHAR Reserved;
+typedef struct _PH_OBJECT_TYPE_INFORMATION {
+  PCWSTR Name;
+  ULONG NumberOfObjects;
+  USHORT Flags;
+  UCHAR TypeIndex;
+  UCHAR Reserved;
 } PH_OBJECT_TYPE_INFORMATION, *PPH_OBJECT_TYPE_INFORMATION;
 
 extern PPH_OBJECT_TYPE PhObjectTypeObject;
@@ -84,65 +73,33 @@ extern PH_QUEUED_LOCK PhDbgObjectListLock;
 extern PPH_CREATE_OBJECT_HOOK PhDbgCreateObjectHook;
 #endif
 
-NTSTATUS PhRefInitialization(
-    VOID
-    );
+NTSTATUS PhRefInitialization(VOID);
 
-_May_raise_
-PHLIBAPI
-PVOID
-NTAPI
-PhCreateObject(
-    _In_ SIZE_T ObjectSize,
-    _In_ PPH_OBJECT_TYPE ObjectType
-    );
+_May_raise_ PHLIBAPI PVOID NTAPI
+PhCreateObject(_In_ SIZE_T ObjectSize, _In_ PPH_OBJECT_TYPE ObjectType);
 
 PHLIBAPI
 PVOID
 NTAPI
-PhReferenceObject(
-    _In_ PVOID Object
-    );
+PhReferenceObject(_In_ PVOID Object);
 
-_May_raise_
-PHLIBAPI
-PVOID
-NTAPI
-PhReferenceObjectEx(
-    _In_ PVOID Object,
-    _In_ LONG RefCount
-    );
+_May_raise_ PHLIBAPI PVOID NTAPI PhReferenceObjectEx(_In_ PVOID Object,
+                                                     _In_ LONG RefCount);
 
 PHLIBAPI
 PVOID
 NTAPI
-PhReferenceObjectSafe(
-    _In_ PVOID Object
-    );
+PhReferenceObjectSafe(_In_ PVOID Object);
 
 PHLIBAPI
-VOID
-NTAPI
-PhDereferenceObject(
-    _In_ _Post_invalid_ PVOID Object
-    );
+VOID NTAPI PhDereferenceObject(_In_ _Post_invalid_ PVOID Object);
 
 PHLIBAPI
-VOID
-NTAPI
-PhDereferenceObjectDeferDelete(
-    _In_ _Post_invalid_ PVOID Object
-    );
+VOID NTAPI PhDereferenceObjectDeferDelete(_In_ _Post_invalid_ PVOID Object);
 
-_May_raise_
-PHLIBAPI
-VOID
-NTAPI
-PhDereferenceObjectEx(
-    _In_ PVOID Object,
-    _In_ LONG RefCount,
-    _In_ BOOLEAN DeferDelete
-    );
+_May_raise_ PHLIBAPI VOID NTAPI PhDereferenceObjectEx(_In_ PVOID Object,
+                                                      _In_ LONG RefCount,
+                                                      _In_ BOOLEAN DeferDelete);
 
 /**
  * References an array of objects.
@@ -151,15 +108,10 @@ PhDereferenceObjectEx(
  * \param NumberOfObjects The number of elements in \a Objects.
  */
 FORCEINLINE
-VOID
-NTAPI
-PhReferenceObjects(
-    _In_reads_(NumberOfObjects) const PVOID *Objects,
-    _In_ ULONG NumberOfObjects
-    )
-{
-    for (ULONG i = 0; i < NumberOfObjects; i++)
-        PhReferenceObject(Objects[i]);
+VOID NTAPI PhReferenceObjects(_In_reads_(NumberOfObjects) const PVOID *Objects,
+                              _In_ ULONG NumberOfObjects) {
+  for (ULONG i = 0; i < NumberOfObjects; i++)
+    PhReferenceObject(Objects[i]);
 }
 
 /**
@@ -169,64 +121,45 @@ PhReferenceObjects(
  * \param NumberOfObjects The number of elements in \a Objects.
  */
 FORCEINLINE
-VOID
-NTAPI
-PhDereferenceObjects(
-    _In_reads_(NumberOfObjects) const PVOID *Objects,
-    _In_ ULONG NumberOfObjects
-    )
-{
-    for (ULONG i = 0; i < NumberOfObjects; i++)
-        PhDereferenceObject(Objects[i]);
+VOID NTAPI PhDereferenceObjects(_In_reads_(NumberOfObjects)
+                                    const PVOID *Objects,
+                                _In_ ULONG NumberOfObjects) {
+  for (ULONG i = 0; i < NumberOfObjects; i++)
+    PhDereferenceObject(Objects[i]);
 }
 
 PHLIBAPI
 ULONG
 NTAPI
-PhGetObjectRefCount(
-    _In_ PVOID Object
-    );
+PhGetObjectRefCount(_In_ PVOID Object);
 
 PHLIBAPI
 PPH_OBJECT_TYPE
 NTAPI
-PhGetObjectType(
-    _In_ PVOID Object
-    );
+PhGetObjectType(_In_ PVOID Object);
 
 PHLIBAPI
 PPH_OBJECT_TYPE
 NTAPI
-PhCreateObjectType(
-    _In_ PCWSTR Name,
-    _In_ ULONG Flags,
-    _In_opt_ PPH_TYPE_DELETE_PROCEDURE DeleteProcedure
-    );
+PhCreateObjectType(_In_ PCWSTR Name, _In_ ULONG Flags,
+                   _In_opt_ PPH_TYPE_DELETE_PROCEDURE DeleteProcedure);
 
 PHLIBAPI
 PPH_OBJECT_TYPE
 NTAPI
-PhCreateObjectTypeEx(
-    _In_ PCWSTR Name,
-    _In_ ULONG Flags,
-    _In_opt_ PPH_TYPE_DELETE_PROCEDURE DeleteProcedure,
-    _In_opt_ PPH_OBJECT_TYPE_PARAMETERS Parameters
-    );
+PhCreateObjectTypeEx(_In_ PCWSTR Name, _In_ ULONG Flags,
+                     _In_opt_ PPH_TYPE_DELETE_PROCEDURE DeleteProcedure,
+                     _In_opt_ PPH_OBJECT_TYPE_PARAMETERS Parameters);
 
 PHLIBAPI
-VOID
-NTAPI
-PhGetObjectTypeInformation(
-    _In_ PPH_OBJECT_TYPE ObjectType,
-    _Out_ PPH_OBJECT_TYPE_INFORMATION Information
-    );
+VOID NTAPI
+PhGetObjectTypeInformation(_In_ PPH_OBJECT_TYPE ObjectType,
+                           _Out_ PPH_OBJECT_TYPE_INFORMATION Information);
 
 PHLIBAPI
 PVOID
 NTAPI
-PhCreateAlloc(
-    _In_ SIZE_T Size
-    );
+PhCreateAlloc(_In_ SIZE_T Size);
 
 //
 // Object reference functions
@@ -236,67 +169,48 @@ PhCreateAlloc(
 
 EXTERN_C_END
 
-template<typename T>
-FORCEINLINE
-VOID
-PhSwapReference(
-    _Inout_ T** ObjectReference,
-    _In_opt_ T* NewObject
-    )
-{
-    T* oldObject;
+template <typename T>
+FORCEINLINE VOID PhSwapReference(_Inout_ T **ObjectReference,
+                                 _In_opt_ T *NewObject) {
+  T *oldObject;
 
-    oldObject = *ObjectReference;
-    *ObjectReference = NewObject;
+  oldObject = *ObjectReference;
+  *ObjectReference = NewObject;
 
-    if (NewObject) PhReferenceObject((PVOID)NewObject);
-    if (oldObject) PhDereferenceObject((PVOID)oldObject);
+  if (NewObject)
+    PhReferenceObject((PVOID)NewObject);
+  if (oldObject)
+    PhDereferenceObject((PVOID)oldObject);
 }
 
-template<typename T>
-FORCEINLINE
-VOID
-PhMoveReference(
-    _Inout_ T** ObjectReference,
-    _In_opt_ _Assume_refs_(1) T* NewObject
-    )
-{
-    T* oldObject = *ObjectReference;
-    *ObjectReference = NewObject;
+template <typename T>
+FORCEINLINE VOID PhMoveReference(_Inout_ T **ObjectReference,
+                                 _In_opt_ _Assume_refs_(1) T *NewObject) {
+  T *oldObject = *ObjectReference;
+  *ObjectReference = NewObject;
 
-    if (oldObject)
-    {
-        PhDereferenceObject((PVOID)oldObject);
-    }
+  if (oldObject) {
+    PhDereferenceObject((PVOID)oldObject);
+  }
 }
 
-template<typename T>
-FORCEINLINE
-VOID
-PhSetReference(
-    _Out_ T** ObjectReference,
-    _In_opt_ T* NewObject
-    )
-{
-    *ObjectReference = NewObject;
+template <typename T>
+FORCEINLINE VOID PhSetReference(_Out_ T **ObjectReference,
+                                _In_opt_ T *NewObject) {
+  *ObjectReference = NewObject;
 
-    if (NewObject) PhReferenceObject(NewObject);
+  if (NewObject)
+    PhReferenceObject(NewObject);
 }
 
-template<typename T>
-FORCEINLINE
-VOID
-PhClearReference(
-    _Inout_ T** ObjectReference
-    )
-{
-    T* oldObject = *ObjectReference;
-    *ObjectReference = NULL;
+template <typename T>
+FORCEINLINE VOID PhClearReference(_Inout_ T **ObjectReference) {
+  T *oldObject = *ObjectReference;
+  *ObjectReference = NULL;
 
-    if (oldObject)
-    {
-        PhDereferenceObject((PVOID)oldObject);
-    }
+  if (oldObject) {
+    PhDereferenceObject((PVOID)oldObject);
+  }
 }
 
 EXTERN_C_START
@@ -304,60 +218,47 @@ EXTERN_C_START
 #else
 
 FORCEINLINE
-VOID
-PhSwapReference(
-    _Inout_ PVOID *ObjectReference,
-    _In_opt_ PVOID NewObject
-    )
-{
-    PVOID oldObject;
+VOID PhSwapReference(_Inout_ PVOID *ObjectReference, _In_opt_ PVOID NewObject) {
+  PVOID oldObject;
 
-    oldObject = *ObjectReference;
-    *ObjectReference = NewObject;
+  oldObject = *ObjectReference;
+  *ObjectReference = NewObject;
 
-    if (NewObject) PhReferenceObject(NewObject);
-    if (oldObject) PhDereferenceObject(oldObject);
+  if (NewObject)
+    PhReferenceObject(NewObject);
+  if (oldObject)
+    PhDereferenceObject(oldObject);
 }
 
 FORCEINLINE
-VOID
-PhMoveReference(
-    _Inout_ PVOID *ObjectReference,
-    _In_opt_ _Assume_refs_(1) PVOID NewObject
-    )
-{
-    PVOID oldObject;
+VOID PhMoveReference(_Inout_ PVOID *ObjectReference,
+                     _In_opt_ _Assume_refs_(1) PVOID NewObject) {
+  PVOID oldObject;
 
-    oldObject = *ObjectReference;
-    *ObjectReference = NewObject;
+  oldObject = *ObjectReference;
+  *ObjectReference = NewObject;
 
-    if (oldObject) PhDereferenceObject(oldObject);
+  if (oldObject)
+    PhDereferenceObject(oldObject);
 }
 
 FORCEINLINE
-VOID
-PhSetReference(
-    _Out_ PVOID *ObjectReference,
-    _In_opt_ PVOID NewObject
-    )
-{
-    *ObjectReference = NewObject;
+VOID PhSetReference(_Out_ PVOID *ObjectReference, _In_opt_ PVOID NewObject) {
+  *ObjectReference = NewObject;
 
-    if (NewObject) PhReferenceObject(NewObject);
+  if (NewObject)
+    PhReferenceObject(NewObject);
 }
 
 FORCEINLINE
-VOID
-PhClearReference(
-    _Inout_ PVOID* ObjectReference
-    )
-{
-    PVOID oldObject;
+VOID PhClearReference(_Inout_ PVOID *ObjectReference) {
+  PVOID oldObject;
 
-    oldObject = *ObjectReference;
-    *ObjectReference = NULL;
+  oldObject = *ObjectReference;
+  *ObjectReference = NULL;
 
-    if (oldObject) PhDereferenceObject(oldObject);
+  if (oldObject)
+    PhDereferenceObject(oldObject);
 }
 
 #endif
@@ -368,17 +269,13 @@ PhClearReference(
 
 FORCEINLINE
 PVOID
-PhCreateObjectZero(
-    _In_ SIZE_T ObjectSize,
-    _In_ PPH_OBJECT_TYPE ObjectType
-    )
-{
-    PVOID object;
+PhCreateObjectZero(_In_ SIZE_T ObjectSize, _In_ PPH_OBJECT_TYPE ObjectType) {
+  PVOID object;
 
-    object = PhCreateObject(ObjectSize, ObjectType);
-    memset(object, 0, ObjectSize);
+  object = PhCreateObject(ObjectSize, ObjectType);
+  memset(object, 0, ObjectSize);
 
-    return object;
+  return object;
 }
 
 //
@@ -387,57 +284,38 @@ PhCreateObjectZero(
 
 /** The size of the static array in an auto-release pool. */
 #define PH_AUTO_POOL_STATIC_SIZE 64
-/** The maximum size of the dynamic array for it to be kept after the auto-release pool is drained. */
+/** The maximum size of the dynamic array for it to be kept after the
+ * auto-release pool is drained. */
 #define PH_AUTO_POOL_DYNAMIC_BIG_SIZE 256
 
 /**
- * An auto-dereference pool can be used for semi-automatic reference counting. Batches of objects
- * are dereferenced at a certain time.
+ * An auto-dereference pool can be used for semi-automatic reference counting.
+ * Batches of objects are dereferenced at a certain time.
  *
- * This object is not thread-safe and cannot be used across thread boundaries. Always store them as
- * local variables.
+ * This object is not thread-safe and cannot be used across thread boundaries.
+ * Always store them as local variables.
  */
-typedef struct _PH_AUTO_POOL
-{
-    ULONG StaticCount;
-    PVOID StaticObjects[PH_AUTO_POOL_STATIC_SIZE];
+typedef struct _PH_AUTO_POOL {
+  ULONG StaticCount;
+  PVOID StaticObjects[PH_AUTO_POOL_STATIC_SIZE];
 
-    ULONG DynamicCount;
-    ULONG DynamicAllocated;
-    PVOID *DynamicObjects;
+  ULONG DynamicCount;
+  ULONG DynamicAllocated;
+  PVOID *DynamicObjects;
 
-    struct _PH_AUTO_POOL *NextPool;
+  struct _PH_AUTO_POOL *NextPool;
 } PH_AUTO_POOL, *PPH_AUTO_POOL;
 
 PHLIBAPI
-VOID
-NTAPI
-PhInitializeAutoPool(
-    _Out_ PPH_AUTO_POOL AutoPool
-    );
+VOID NTAPI PhInitializeAutoPool(_Out_ PPH_AUTO_POOL AutoPool);
 
-_May_raise_
-PHLIBAPI
-VOID
-NTAPI
-PhDeleteAutoPool(
-    _In_ _Post_invalid_ PPH_AUTO_POOL AutoPool
-    );
+_May_raise_ PHLIBAPI VOID NTAPI
+PhDeleteAutoPool(_In_ _Post_invalid_ PPH_AUTO_POOL AutoPool);
 
 PHLIBAPI
-VOID
-NTAPI
-PhDrainAutoPool(
-    _In_ PPH_AUTO_POOL AutoPool
-    );
+VOID NTAPI PhDrainAutoPool(_In_ PPH_AUTO_POOL AutoPool);
 
-_May_raise_
-PHLIBAPI
-PVOID
-NTAPI
-PhAutoDereferenceObject(
-    _In_opt_ PVOID Object
-    );
+_May_raise_ PHLIBAPI PVOID NTAPI PhAutoDereferenceObject(_In_opt_ PVOID Object);
 
 #define PH_AUTO PhAutoDereferenceObject
 #define PH_AUTO_T(Type, Object) ((Type *)PH_AUTO(Object))
